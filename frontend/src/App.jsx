@@ -1,27 +1,30 @@
-import { useEffect, useState} from "react";
-import JobCard from "./JobCard";
-import axios from "axios";
-import "./App.css";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import JobForm from './components/JobForm';
+import JobCard from './components/JobCard';
 
 function App() {
   const [jobs, setJobs] = useState([]);
+
+  const fetchJobs = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/jobs');
+      setJobs(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/jobs");
-        setJobs(res.data);
-      } catch (err) {
-        console.error("Error fetching jobs:", err);
-      }
-    };
     fetchJobs();
   }, []);
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <h1 className="text-2xl font-bold text-blue-600">Job Board</h1>
-      <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <div className="p-4">
+      <JobForm onJobPosted={fetchJobs} />
+      <div className="mt-8 grid gap-4 grid-cols-1 md:grid-cols-2">
         {jobs.map((job) => (
-          <JobCard key={job.id} job={job} />
+          <JobCard key={job._id} job={job} />
         ))}
       </div>
     </div>
