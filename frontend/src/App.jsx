@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import JobForm from './components/JobForm';
-import JobCard from './components/JobCard';
+import JobCard from './JobCard';
 
 function App() {
   const [jobs, setJobs] = useState([]);
